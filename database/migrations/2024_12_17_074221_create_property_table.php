@@ -38,7 +38,7 @@ return new class extends Migration
             $table->decimal('harga_jual', 10, 2)->nullable(false); 
             
             $table->string('listrik', 255); 
-            $table->enum('air', ['PDAM', 'aretsis'])->nullable(); 
+            $table->enum('air', ['PDAM', 'artesis'])->nullable(); 
             $table->decimal('ipl', 10, 2); 
             $table->decimal('rate_komisi', 10, 2)->default(0.00)->nullable(false); 
             

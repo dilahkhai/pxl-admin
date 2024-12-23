@@ -15,10 +15,6 @@ Route::get('/bookings/change-tenant/{id}', [BookingController::class, 'changeTen
 Route::post('/bookings/change-tenant/{id}', [BookingController::class, 'storeChangeTenant'])->name('books.storeChangeTenant');
 
 // Property Routes
-Route::get('/properties', [PropertyController::class, 'index'])->name('properties.store');
-Route::get('/bookings/book/{id}', [PropertyController::class, 'book'])->name('properties.book');
-Route::post('/bookings/store', [PropertyController::class, 'store'])->name('properties.store');
-Route::get('/bookings/extend/{id}', [PropertyController::class, 'extendContract'])->name('properties.extend');
-Route::post('/bookings/extend/{id}', [PropertyController::class, 'storeExtension'])->name('properties.storeExtension');
-Route::get('/bookings/change-tenant/{id}', [PropertyController::class, 'changeTenant'])->name('properties.changeTenant');
-Route::post('/bookings/change-tenant/{id}', [PropertyController::class, 'storeChangeTenant'])->name('properties.storeChangeTenant');
+Route::get('/properties', [PropertyController::class, 'index'])->name('properties.index');
+Route::get('/properties/new', [PropertyController::class, 'create']);
+Route::post('/properties/new', [PropertyController::class, 'store'])->name('properties.store');
