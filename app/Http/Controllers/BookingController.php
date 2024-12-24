@@ -17,6 +17,38 @@ class BookingController extends Controller
         return view('booking', compact('properties'));
     }
 
+    public function storeBooking(Request $request)
+    {
+        $validated = $request->validate([
+            'property_id' => 'required|exists:properties,id',
+            'penyewa' => 'required|string|max:255',
+            'nomor_penyewa' => 'required|string|max:20',
+            'NIK' => 'required|string|max:16',
+            'lampiran_ktp' => 'nullable|file|mimes:jpg,jpeg,png,pdf',
+            'harga_tersewa' => 'required|numeric',
+            'pajak' => 'required|numeric',
+            'DP_1' => 'nullable|numeric',
+            'tanggal_dp_1' => 'nullable|date',
+            'DP_2' => 'nullable|numeric',
+            'tanggal_dp_2' => 'nullable|date',
+            'pelunasan' => 'nullable|numeric',
+            'periode_sewa' => 'required|string',
+            'tanggal_mulai' => 'required|date',
+            'surat_kontrak' => 'nullable|file|mimes:pdf',
+        ]);
+
+        $tanggal_mulai = Carbon::parse($validated['tanggal_mulai']);
+        $tanggal_berakhir = $this->calculateEndsdate($tanggal_mulai, $validated['periode_sewa']);
+
+        // Simpan data booking
+        $booking = new Booking($validated);
+        $booking->tanggal_berakhir = $tanggal_berakhir;
+        $booking->save();
+
+        return redirect()->route('property.booking')->with('success', 'Booking berhasil dibuat!');
+    }
+
+
     public function extendContract($id)
     {
         $property = Property::findOrFail($id);

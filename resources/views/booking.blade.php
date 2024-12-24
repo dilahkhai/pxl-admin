@@ -39,7 +39,7 @@
                         <td>{{ $property->status }}</td>
                         <td>
                             @if($property->status === 'available')
-                                <a href="{{ route('properties.book', $property->id) }}" class="btn btn-success">Book</a>
+                                <a href="{{ route('', $property->id) }}" class="btn btn-success">Book</a>
                             @else
                                 <span class="text-muted">Unavailable</span>
                             @endif

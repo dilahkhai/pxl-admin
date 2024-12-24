@@ -1,5 +1,11 @@
 @extends('layouts.apps')
 @section('main')
+<style>
+    .fixed-height{
+        height: 300px; 
+        object-fit: cover;
+    }
+</style>
     <div class="container py-5">
         <header class="text-center mb-5" style="margin-top: 50px">
             <!-- <h1 class="display-4 font-weight-bold">Happy People Are The Prettiest</h1>
@@ -21,24 +27,24 @@
         <!-- First Row [Prosucts]-->
         <body class="body">
             <h2 class="font-weight-bold mb-2" style="margin-top: 100px">From the Shop</h2>
-            <a href="{{ route('properties.store') }}" class="btn btn-primary">add</a>
-        <div class="row">
-            @foreach ($properties as $item)
-                <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-                    <div class="card">
-                        <div class="card-body">
-                            <img src="properties/{{ $item->photo_path }}" class="card-img-top" alt="...">
-                            <h5 class="card-title">{{ $item->product }}</h5>
-                            <p style="color:darkgrey">{{ $item->stok }} pcs</p>
-                            <h5 style="color:deepskyblue">Rp. {{ number_format($item->price) }}</h5>
-                            <a href="{{ url('care') }}/{{ $item->id }}" class="btn btn-primary">Add to cart</a>
-                            <br>
+            <a href="{{ route('properties.store') }}" class="btn btn-primary mb-4">add</a>
+            <div class="row">
+                @foreach ($properties as $item)
+                    <div class="col-lg-4 col-md-6 mb-4 mb-lg-0" onclick="window.location.href='{{ route('properties.detail', $item->id) }}'">
+                        <div class="card">
+                            <img src="{{ asset('storage/' . $item->photo_path) }}" class="card-img-top fixed-height" alt="...">
+                            <div class="card-body">
+                                <h3 class="card-title">{{ $item->type }}</h3>
+                                <h6 style="color:orange">{{ $item->penggunaan }}</h6>
+                                <h5 class="card-text">{{ $item->description }}</h5>
+                                <p style="color:darkgrey">{{ $item->address }}</p>
+                                <h5 style="color:deepskyblue">Rp. {{ $item->harga_jual }}</h5>
+                            </div>
                         </div>
+                        <br>
                     </div>
-                    <br>
-                </div>
-            @endforeach
-        </div>
+                @endforeach
+            </div>
         </body>
     </div>
 @endsection

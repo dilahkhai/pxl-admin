@@ -23,9 +23,8 @@
         <body class="body">
             <form action="{{ route('properties.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                
                 <div class="row">
-                        <div class="mb-3 col-md-4">
+                        <div class="mb-3 col-md-8">
                             <label for="pemilik" class="form-label">Pemilik</label>
                             <input type="text" id="pemilik" name="pemilik" class="form-control" required>
                         </div>
@@ -36,8 +35,18 @@
                         </div>
 
                         <div class="mb-3 col-md-4">
+                            <label for="agent" class="form-label">Agent</label>
+                            <input type="text" id="agent" name="agent" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3 col-md-4">
                             <label for="type" class="form-label">Type</label>
                             <input type="text" id="type" name="type" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3 col-md-4">
+                            <label for="tahun_perolehan" class="form-label">Tahun Perolehan</label>
+                            <input type="month" id="tahun_perolehan" name="tahun_perolehan" class="form-control" required>
                         </div>
 
                         <div class="mb-3 col-md-6">
@@ -50,10 +59,6 @@
                             <input type="text" id="address" name="address" class="form-control" required>
                         </div>
 
-                        <div class="mb-3 col-md-4">
-                            <label for="tahun_perolehan" class="form-label">Tahun Perolehan</label>
-                            <input type="month" id="tahun_perolehan" name="tahun_perolehan" class="form-control" required>
-                        </div>
 
                         <div class="mb-3 col-md-4">
                             <label for="LB" class="form-label">Luas Bangunan</label>
@@ -150,7 +155,7 @@
                             </select>
                         </div>
 
-                        <div class="mb-3 col-md-8">
+                        <div class="mb-3 col-md-12">
                             <label for="photo_path" class="form-label">Upload Image</label>
                             <input type="file" id="photo_path" name="photo_path" class="form-control" accept=".jpg,.jpeg,.png,.pdf" required>
                         </div>
