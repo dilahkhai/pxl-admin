@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Property;
 use App\Models\Booking;
 use App\Models\BookingHistory;
+use Carbon\Carbon;
 
 class BookingController extends Controller
 {
@@ -14,38 +15,59 @@ class BookingController extends Controller
     {
         $properties = Property::all();
         $books = Booking::all();
-        return view('booking', compact('properties'));
+        return view('books.booking', compact('properties'));
+    }
+
+    public function createBooking($id)
+    {
+        $properties = Property::find($id); 
+        return view('books.booking_prop', compact('properties'));
     }
 
     public function storeBooking(Request $request)
     {
         $validated = $request->validate([
-            'property_id' => 'required|exists:properties,id',
+            'property_id' => 'required|exists:property,id',
             'penyewa' => 'required|string|max:255',
             'nomor_penyewa' => 'required|string|max:20',
             'NIK' => 'required|string|max:16',
-            'lampiran_ktp' => 'nullable|file|mimes:jpg,jpeg,png,pdf',
+            'lampiran_ktp' => 'required|file|mimes:jpg,jpeg,png,pdf',
             'harga_tersewa' => 'required|numeric',
-            'pajak' => 'required|numeric',
+            'pajak' => 'required|in:y,n',
             'DP_1' => 'nullable|numeric',
             'tanggal_dp_1' => 'nullable|date',
             'DP_2' => 'nullable|numeric',
             'tanggal_dp_2' => 'nullable|date',
-            'pelunasan' => 'nullable|numeric',
+            'pelunasan' => 'required|numeric',
             'periode_sewa' => 'required|string',
             'tanggal_mulai' => 'required|date',
             'surat_kontrak' => 'nullable|file|mimes:pdf',
         ]);
 
-        $tanggal_mulai = Carbon::parse($validated['tanggal_mulai']);
-        $tanggal_berakhir = $this->calculateEndsdate($tanggal_mulai, $validated['periode_sewa']);
+        if ($request->hasFile('lampiran_ktp')) {
+            $ktpPath = $request->file('lampiran_ktp')->store('public/ktp-penyewa');
+            $validated['lampiran_ktp'] = basename($ktpPath);
+        }
 
-        // Simpan data booking
+        if ($request->hasFile('surat_kontrak')) {
+            $kontrakPath = $request->file('surat_kontrak')->store('public/surat-kontrak');
+            $validated['surat_kontrak'] = basename($kontrakPath);
+        }
+
+        $tanggal_mulai = Carbon::parse($validated['tanggal_mulai']);
+        $tanggal_berakhir = $this->calculateEnddate($tanggal_mulai, $validated['periode_sewa']);
+
         $booking = new Booking($validated);
         $booking->tanggal_berakhir = $tanggal_berakhir;
         $booking->save();
 
-        return redirect()->route('property.booking')->with('success', 'Booking berhasil dibuat!');
+        $property = Property::find($validated['property_id']); // Temukan properti berdasarkan ID
+        if ($property) {
+            $property->status = 'rented'; // Ubah status menjadi 'rented'
+            $property->save();  // Simpan perubahan
+        }
+
+        return redirect()->route('books.index')->with('success', 'Booking berhasil dibuat!');
     }
 
 
@@ -140,7 +162,7 @@ class BookingController extends Controller
             'tanggal_dp_1' => $request->tanggal_dp_1,
             'DP_2' => $request->DP_2,
             'tanggal_dp_2' => $request->tanggal_dp_2,
-            'pelunasam' => $request->pelunasam,
+            'pelunasan' => $request->pelunasan,
             'tanggal_mulai' => $tanggal_mulai,
             'tanggal_berakhir' => $tanggal_berakhir,
             'surat_kontrak' => $request->surat_kontrak,
@@ -168,11 +190,5 @@ class BookingController extends Controller
             default:
             throw new \Exception('Periode sewa tidak valid.');
         }
-    }
-
-    public function showBookingForm()
-    {
-        $properties = Property::all(); 
-        return view('booking', compact('properties'));
     }
 }

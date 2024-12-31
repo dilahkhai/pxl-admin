@@ -15,7 +15,7 @@ class Property extends Model
         'pemilik', 'agent', 'developer', 'type', 'description', 'address',
         'tahun_perolehan', 'jumlah_tingkat', 'LT', 'LB', 'sertifikat', 'penggunaan',
         'periode_sewa', 'status_pbb', 'harga_penawaran', 'deposit_sewa', 'harga_jual',
-        'listrik', 'air', 'ipl', 'rate_komisi', 'status', 'photo_path'
+        'listrik', 'air', 'ipl', 'rate_komisi', 'status', 'image_path'
     ];
 
     protected $cast = [
@@ -25,6 +25,11 @@ class Property extends Model
     public function bookings()
     {
         return $this->hasMany(Booking::class);
+    }
+
+    public function images()
+    {
+        return $this->hasMany(PropertyImages::class);
     }
 
     public static function boot()

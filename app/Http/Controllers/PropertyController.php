@@ -7,7 +7,6 @@ use App\Models\Property;
 
 class PropertyController extends Controller
 {
-    // Display all properties
     public function index()
     {
         $properties = Property::all();
@@ -44,26 +43,40 @@ class PropertyController extends Controller
             'ipl' => 'required|numeric|min:0',
             'rate_komisi' => 'required|numeric|min:0',
             'status' => 'required|in:available,rented,sold',
-            'photo_path' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'images.*' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
-        if ($request->hasFile('photo_path')) {
-            $path = $request->file('photo_path')->store('properties', 'public');
-            $validatedData['photo_path'] = $path;
+        $property = Property::create($validatedData);
+
+        if ($request->hasFile('images')) {
+            $totalSize = 0;
+    
+            foreach ($request->file('images') as $image) {
+                $totalSize += $image->getSize(); 
+            }
+    
+            if ($totalSize > 104857600) {
+                return back()->with('error', 'Total ukuran file terlalu besar. Maksimal total 100MB.');
+            }
+    
+            $property = Property::create($validatedData);
+    
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('properties', 'public');
+                $property->images()->create([
+                    'property_id' => $property->id,
+                    'image_path' => $path,
+                ]);
+            }
+
+            return redirect()->route('properties.index')->with('success', 'Property berhasil ditambahkan.');
         }
-
-        Property::create($validatedData);
-
-        return redirect()->route('properties.index')
-            ->with('success', 'Property berhasil ditambahkan.');
     }
 
-    public function show($id){
-        // manggil data per-id (1 atau by id)
-        // return $param;
-
-        $properties = Property::where('id', $id)->first();
-        return view('properties.detail', compact('properties')) ;       
+    public function show($id)
+    {
+        $property = Property::find($id); 
+        
+        return view('properties.detail', compact('property'));
     }
-
 }
