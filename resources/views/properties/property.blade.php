@@ -89,7 +89,7 @@
                             <label for="status_pbb" class="form-label">Status PBB</label>
                             <select id="status_pbb" name="status_pbb" class="form-select" required>
                                 <option value="sudah bayar">Sudah</option>
-                                <option value="bulan bayar">Belum</option>
+                                <option value="belum bayar">Belum</option>
                             </select>
                         </div>
 
@@ -143,13 +143,7 @@
                         <div class="mb-3">
                             <label for="images" class="form-label">Upload Images</label>
                             <input type="file" id="images" name="images[]" multiple class="form-control" accept=".jpg,.jpeg,.png,.pdf" required>
-                            @if ($errors->has('images.*'))
-                                <div class="text-danger">
-                                    @foreach ($errors->get('images.*') as $message)
-                                        <p>{{ $message }}</p>
-                                    @endforeach
-                                </div>
-                            @endif
+                            
                         </div>
 
                         <button type="submit" class="btn btn-primary">Submit Property</button>

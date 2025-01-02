@@ -9,7 +9,8 @@
 
         .small-ver{
             height: 235px;
-            object-fit: cover;
+            object-fit: cover !important;
+            width: fit-content;
         }
     </style>
 
@@ -20,8 +21,8 @@
                     <div class="card-body">
                         <div class="jumbotron">
                             <div class="row">
-                                <img src="{{ asset('storage/' . $property->images->first()->image_path) }}" alt="Property Image" class="fixed-height">
-                                <div class="col-md-4">
+                                <img src="{{ asset('storage/' . $property->images->first()->image_path) }}" alt="Property Image" class="fixed-height mb-4">
+                                <div class="col-sm-4">
                                     @if ($property->images->count() > 1)
                                         @foreach ($property->images->skip(1) as $item)
                                             <img src="{{ asset('storage/' . $item->image_path) }}" alt="Property Image" class="small-ver mb-4">

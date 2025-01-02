@@ -16,6 +16,10 @@
         text-decoration: none;
         color: black;
     }
+    .text-deco:hover, .text-deco:focus {
+        color: black;
+        text-decoration: none;
+    }
 </style>
 <div class="container py-5">
     <header class="text-center mb-5" style="margin-top: 50px">
@@ -24,8 +28,41 @@
     </header>
     <body class="body">
         <div class="row">
-            @foreach ($properties as $item)
-                @if($item->status === 'available') 
+            @guest
+                @foreach ($properties as $item)
+                    @if($item->status === 'available') 
+                        <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                            <div class="card property-card" data-id="{{ $item->id }}">
+                                <a class="text-deco property-link" href="{{ route('properties.detail', $item->id) }}">
+                                    @if($item->images->isNotEmpty())
+                                        <img src="{{ asset('storage/' . $item->images->first()->image_path) }}" alt="Property Image" class="fixed-height">
+                                    @else
+                                        <img src="{{ asset('storage/default-image.jpg') }}" alt="Default Image" style="width: 100%; height: auto;">
+                                    @endif
+                                    <div class="card-body">
+                                        <h3 class="card-title">
+                                            {{ $item->type }}
+                                            @if($item->penggunaan === 'Disewakan')
+                                                <button type="button" class="btn btn-outline-primary btn-sm" disabled>Disewakan</button>
+                                            @elseif($item->penggunaan === 'Dijual')
+                                                <button type="button" class="btn btn-outline-primary btn-sm" disabled>Dijual</button>
+                                            @endif
+                                        </h3>
+                                        <h5 style="color:orange">{{ $item->penggunaan }}</h5>
+                                        <h5 class="card-text text-truncate">{{ $item->description }}</h5>
+                                        <p style="color:darkgrey">{{ $item->address }}</p>
+                                        <h2 style="color:deepskyblue">Rp. {{ $item->harga_jual }}</h2>
+                                    </div>
+                                </a>
+                            </div>
+                            <br>
+                        </div>
+                    @endif
+                @endforeach
+            @endguest
+
+            @auth
+                @foreach ($properties as $item)
                     <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
                         <div class="card property-card" data-id="{{ $item->id }}">
                             <a class="text-deco property-link" href="{{ route('properties.detail', $item->id) }}">
@@ -35,7 +72,18 @@
                                     <img src="{{ asset('storage/default-image.jpg') }}" alt="Default Image" style="width: 100%; height: auto;">
                                 @endif
                                 <div class="card-body">
-                                    <h3 class="card-title">{{ $item->type }}</h3>
+                                    <h3 class="card-title">
+                                        {{ $item->type }}
+                                        <span>
+                                            @if($item->status === 'rented')
+                                                <button type="button" class="btn btn-outline-danger btn-sm" disabled>Rented</button>
+                                            @elseif($item->status === 'sold')
+                                                <button type="button" class="btn btn-outline-danger btn-sm" disabled>Sold</button>
+                                            @elseif($item->status === 'available')
+                                                <button type="button" class="btn btn-outline-success btn-sm" disabled>Available</button>
+                                            @endif
+                                        </span>
+                                    </h3>
                                     <h5 style="color:orange">{{ $item->penggunaan }}</h5>
                                     <h5 class="card-text text-truncate">{{ $item->description }}</h5>
                                     <p style="color:darkgrey">{{ $item->address }}</p>
@@ -45,26 +93,11 @@
                         </div>
                         <br>
                     </div>
-                @endif
-            @endforeach
+                @endforeach
+            @endauth
         </div>
     </body>
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const addButton = document.getElementById('add-property');
-        addButton.addEventListener('click', (event) => {
-            event.preventDefault(); // Prevent default action
-            window.location.href = addButton.href; // Redirect to the add property page
-        });
 
-        document.querySelectorAll('.property-card').forEach((card) => {
-            const link = card.querySelector('.property-link');
-            card.addEventListener('click', () => {
-                window.location.href = link.href; // Manually redirect to detail page
-            });
-        });
-    });
-</script>
 @endsection

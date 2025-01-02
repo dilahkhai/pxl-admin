@@ -49,18 +49,6 @@ class PropertyController extends Controller
         $property = Property::create($validatedData);
 
         if ($request->hasFile('images')) {
-            $totalSize = 0;
-    
-            foreach ($request->file('images') as $image) {
-                $totalSize += $image->getSize(); 
-            }
-    
-            if ($totalSize > 104857600) {
-                return back()->with('error', 'Total ukuran file terlalu besar. Maksimal total 100MB.');
-            }
-    
-            $property = Property::create($validatedData);
-    
             foreach ($request->file('images') as $image) {
                 $path = $image->store('properties', 'public');
                 $property->images()->create([

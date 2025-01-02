@@ -67,7 +67,7 @@ class BookingController extends Controller
             $property->save();  // Simpan perubahan
         }
 
-        return redirect()->route('books.index')->with('success', 'Booking berhasil dibuat!');
+        return redirect()->route('properties.index')->with('success', 'Booking berhasil dibuat!');
     }
 
 
