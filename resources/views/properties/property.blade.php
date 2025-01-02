@@ -142,8 +142,12 @@
 
                         <div class="mb-3">
                             <label for="images" class="form-label">Upload Images</label>
-                            <input type="file" id="images" name="images[]" multiple class="form-control" accept=".jpg,.jpeg,.png,.pdf" required>
-                            
+                            <input type="file" id="images" name="images[]" multiple class="form-control" accept=".jpg,.jpeg,.png,.pdf">
+                            @if(session('error'))
+                                <div class="alert alert-danger">
+                                    {{ session('error') }}
+                                </div>
+                            @endif
                         </div>
 
                         <button type="submit" class="btn btn-primary">Submit Property</button>
