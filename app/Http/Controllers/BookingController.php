@@ -54,6 +54,9 @@ class BookingController extends Controller
             $validated['surat_kontrak'] = basename($kontrakPath);
         }
 
+        // if () {
+        //     //
+        // }
         $tanggal_mulai = Carbon::parse($validated['tanggal_mulai']);
         $tanggal_berakhir = $this->calculateEnddate($tanggal_mulai, $validated['periode_sewa']);
 
