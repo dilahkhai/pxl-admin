@@ -9,6 +9,31 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    public function showRegisterForm()
+    {
+        return view('auth.register');
+    }
+
+    public function register(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => 'user',
+        ]);
+
+        \Log::info('User  created: ', ['user' => $user]);
+
+        return redirect()->route('properties.index')->with('success', 'Registration successful!');
+    }
+
     public function showLoginForm()
     {
         return view('auth.login');
@@ -21,7 +46,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->route    ('properties.index');
+            return view('properties.index');
         }
 
         return back()->withErrors([
@@ -39,26 +64,5 @@ class AuthController extends Controller
         return redirect('/');
     }
 
-    public function showRegisterForm()
-    {
-        return view('auth.register');
-    }
-
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'user',
-        ]);
-
-        return redirect('/login')->with('success', 'Registration successful!');
-    }
+    
 }

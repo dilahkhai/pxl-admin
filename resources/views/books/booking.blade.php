@@ -37,7 +37,7 @@
             @foreach ($properties as $item)
                 <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
                     <div class="card property-card" data-id="{{ $item->id }}">
-                        <a class="text-deco property-link" href="{{ route('properties.detail', $item->id) }}">
+                        <a class="text-deco property-link" href="{{ route('books.book', $item->id) }}">
                             @if($item->images->isNotEmpty())
                                 <img src="{{ asset('storage/' . $item->images->first()->image_path) }}" alt="Property Image" class="fixed-height">
                             @else

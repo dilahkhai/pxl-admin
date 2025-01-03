@@ -97,8 +97,10 @@
                                             </div>
                                         </div>
                                         <h2 style="color:deepskyblue" class="mb-4">
-                                            Rp {{ $property->harga_jual }}/
-                                            <span style="font-size: 20px;">{{ $property->periode_sewa }}</span>
+                                            Rp {{ $property->harga_jual }}
+                                            @if($property->penggunaan === 'Disewakan')
+                                            <span style="font-size: 20px;">/{{ $property->periode_sewa }}</span>
+                                            @endif>
                                         </h2>
                                         <div class="row">
                                             <div class="col-auto mb-4">

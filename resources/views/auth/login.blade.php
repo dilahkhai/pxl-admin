@@ -8,10 +8,13 @@
 </head>
 <body>
     <style>
-        .cardbody-color{
-  background-color: #ebf2fa;
-}
-
+        .bg-image-vertical {
+            position: relative;
+            overflow: hidden;
+            background-repeat: no-repeat;
+            background-position: right center;
+            background-size: auto 100%;
+        }
     </style>
     <!-- <form action="{{ route('login') }}" method="POST">
         @csrf
@@ -24,38 +27,39 @@
         <button type="submit">Login</button>
     </form> -->
 
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
-        <div class="col-md-6 offset-md-3">
-            <h2 class="text-center text-dark mt-5">Login Form</h2>
-            <div class="card my-5">
-                <form action="{{ route('login') }}" method="POST" class="card-body cardbody-color p-lg-5">
+            <div class="col-sm-6 text-black">
+
+                <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
+
+                <form action="{{ route('login') }}" method="POST" style="width: 23rem;">
                     @csrf
-                    <div class="text-center">
-                    <img src="https://cdn.pixabay.com/photo/2016/03/31/19/56/avatar-1295397__340.png" class="img-fluid profile-image-pic img-thumbnail rounded-circle my-3"
-                        width="200px" alt="profile">
+                    <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Log in</h3>
+
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="form2Example18">Email address</label>
+                        <input type="email" name="email" id="email" class="form-control form-control-lg" />
                     </div>
 
-                    <div class="mb-3">
-                        <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp"
-                            placeholder="Email">
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="form2Example28">Password</label>
+                        <input type="password"  name="password" id="password" class="form-control form-control-lg" />
                     </div>
-                    <div class="mb-3">
-                        <input type="password" name="password" class="form-control" id="password" placeholder="Password">
+
+                    <div class="pt-1 mb-4">
+                        <button class="btn btn-info btn-block" type="submit">Login</button>
                     </div>
-                    <div class="text-center"><button type="submit" class="btn btn-outline-primary px-5 mb-5 w-100">Login</button></div>
+
+                    <p class="small mb-5 pb-lg-2"><a class="text-muted" href="#!">Forgot password?</a></p>
+                    <p>Don't have an account? <a href="#!" class="link-info">Register here</a></p>
+
                 </form>
-            </div>
 
-        </div>
+                </div>
+
+            </div>
         </div>
     </div>
-    <script>
-        function togglePassword(inputId) {
-            const input = document.getElementById(inputId);
-            const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
-            input.setAttribute('type', type);
-        }
-    </script>
 </body>
 @endsection

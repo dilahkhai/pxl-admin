@@ -51,7 +51,7 @@
                                         <h5 style="color:orange">{{ $item->penggunaan }}</h5>
                                         <h5 class="card-text text-truncate">{{ $item->description }}</h5>
                                         <p style="color:darkgrey">{{ $item->address }}</p>
-                                        <h2 style="color:deepskyblue">Rp. {{ $item->harga_jual }}</h2>
+                                        <h2 style="color:deepskyblue">Rp. {{ $item->harga_penawaran }}</h2>
                                     </div>
                                 </a>
                             </div>

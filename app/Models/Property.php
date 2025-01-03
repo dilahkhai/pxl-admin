@@ -31,16 +31,4 @@ class Property extends Model
     {
         return $this->hasMany(PropertyImages::class);
     }
-
-    public static function boot()
-    {
-        parent::boot();
-        self::saving(function ($model) {
-            $validPeriods = ['1 tahun', '6 bulan', '3 bulan', 'bulanan'];
-            if (!in_array(strtolower($model->periode_sewa), $validPeriods)) {
-                throw new \Exception('Periode sewa tidak valid. Pilih antara 1 tahun, 6 bulan, 3 bulan, atau bulanan.');
-            }
-        });
-    
-    }
 }

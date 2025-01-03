@@ -32,8 +32,10 @@
                                         <div class="col-md-12 align-item-center mb-4">
                                             <div class="card" style="padding:16px;">
                                                 <h2 style="color:deepskyblue" class="mb-4">
-                                                    Rp {{ $properties->harga_jual }}/
-                                                    <span style="font-size: 20px;">{{ $properties->periode_sewa }}</span>
+                                                    Rp {{ $properties->harga_jual }}
+                                                    @if($properties->penggunaan === 'Disewakan')
+                                                    <span style="font-size: 20px;">/{{ $properties->periode_sewa }}</span>
+                                                    @endif
                                                 </h2>
                                                 <div class="row">
                                                     <div class="col-auto mb-4">

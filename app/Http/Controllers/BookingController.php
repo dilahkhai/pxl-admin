@@ -39,18 +39,18 @@ class BookingController extends Controller
             'DP_2' => 'nullable|numeric',
             'tanggal_dp_2' => 'nullable|date',
             'pelunasan' => 'required|numeric',
-            'periode_sewa' => 'required|string',
+            'periode_sewa' => 'nullable|string|required_if:penggunaan,Disewakan',
             'tanggal_mulai' => 'required|date',
             'surat_kontrak' => 'nullable|file|mimes:pdf',
         ]);
 
         if ($request->hasFile('lampiran_ktp')) {
-            $ktpPath = $request->file('lampiran_ktp')->store('public/ktp-penyewa');
+            $ktpPath = $request->file('lampiran_ktp')->store('ktp-penyewa', 'public');
             $validated['lampiran_ktp'] = basename($ktpPath);
         }
 
         if ($request->hasFile('surat_kontrak')) {
-            $kontrakPath = $request->file('surat_kontrak')->store('public/surat-kontrak');
+            $kontrakPath = $request->file('surat_kontrak')->store('surat-kontrak', 'public');
             $validated['surat_kontrak'] = basename($kontrakPath);
         }
 
@@ -61,10 +61,10 @@ class BookingController extends Controller
         $booking->tanggal_berakhir = $tanggal_berakhir;
         $booking->save();
 
-        $property = Property::find($validated['property_id']); // Temukan properti berdasarkan ID
+        $property = Property::find($validated['property_id']); 
         if ($property) {
-            $property->status = 'rented'; // Ubah status menjadi 'rented'
-            $property->save();  // Simpan perubahan
+            $property->status = 'rented'; 
+            $property->save(); 
         }
 
         return redirect()->route('properties.index')->with('success', 'Booking berhasil dibuat!');
